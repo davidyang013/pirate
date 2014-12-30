@@ -8,8 +8,6 @@ ENV REFREST_AT 20141230
 
 # ENV GOPATH /go
 
-ENV https_proxy http://www-proxy.exu.ericsson.se:8080
-
 # Install dependency
 RUN go get github.com/astaxie/beego
 RUN go get github.com/beego/bee
