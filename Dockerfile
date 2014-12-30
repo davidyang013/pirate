@@ -8,10 +8,14 @@ ENV REFREST_AT 20141230
 
 # ENV GOPATH /go
 
+ENV https_proxy http://www-proxy.exu.ericsson.se:8080
+
 # Install dependency
 RUN go get github.com/astaxie/beego
 RUN go get github.com/beego/bee
-RUN go get github.com/larrycai/pirate
+# RUN go get github.com/larrycai/pirate
+
+Add . /go/src/github.com/larrycai/pirate/
 
 # Go to the folder of seagull
 WORKDIR /go/src/github.com/larrycai/pirate/

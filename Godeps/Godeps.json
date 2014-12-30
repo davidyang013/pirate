@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/tobegit3hub/seagull",
+	"ImportPath": "github.com/larrycai/pirate",
 	"GoVersion": "go1.1.2",
 	"Deps": [
 		{

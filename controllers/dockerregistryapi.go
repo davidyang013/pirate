@@ -81,7 +81,7 @@ func RequestUnixSocket(address, method string) string {
 
 /* Give address and method to request docker unix socket */
 func RequestRegistry(address, method string) string {
-	REGISTRY_URL := "http://172.17.0.6:5000/v1"
+	REGISTRY_URL := "http://registry:5000/v1"
 
 	registry_url := REGISTRY_URL + address
 	

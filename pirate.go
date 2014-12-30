@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/astaxie/beego"
-	_ "github.com/tobegit3hub/pirate/routers"
+	_ "github.com/larrycai/pirate/routers"
 )
 
 /* The main function of beego application */
