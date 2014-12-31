@@ -146,6 +146,7 @@ seagull.config(function ($translateProvider) {
   /* Translate into English */
   $translateProvider.translations('en-us', {
     // Index html
+	pirate: 'Pirate',
     seagull: 'Seagull',
     containers: 'Containers',
     images: 'Images',

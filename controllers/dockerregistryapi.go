@@ -18,6 +18,7 @@ import (
 	"net/url"
 //	"strconv"
 	"strings"
+	"encoding/json"
 )
 
 /* Give address and method to request docker unix socket */
@@ -125,19 +126,72 @@ type DockerregistryapiController struct {
 	beego.Controller
 }
 
+type image struct {
+    Name string
+    Id string
+    Tag string
+}
+
+type repository struct {
+    Description string
+    Name string
+}
+
+type search struct {
+    Num_results int
+    Query string
+    Results []repository
+}
+
+func getTags(name string) string {
+	address := "/repositories/" + name + "/tags"
+	fmt.Println(address)
+	result := RequestRegistry(address, "GET")
+    return result
+}
+
 /* Wrap docker remote API to get images */
 func (this *DockerregistryapiController) GetImages() {
 	// https://github.com/docker/docker-registry/issues/63
-	address := "/search"
+	
+    // search for all repository
+	address := "/search"	
 	result := RequestRegistry(address, "GET")
-	this.Ctx.WriteString(result)
+	fmt.Println("result:",result)
+	
+	var searchResult search
+    json.Unmarshal([]byte(result),&searchResult)
+    fmt.Println(searchResult)
+    fmt.Println(searchResult.Results)
+  
+    var f interface{}
+    images := make([]image,0)
+    var oneimage image
+    for _, repo := range searchResult.Results {
+        fmt.Println(repo)
+        tags := getTags(repo.Name)
+        json.Unmarshal([]byte(tags), &f)
+        m := f.(map[string]interface{})
+        for k, v := range m {
+          fmt.Println("tag name:",k,",id:",v)
+          oneimage.Name =  repo.Name
+          oneimage.Tag = k
+          oneimage.Id = v.(string)
+          images = append(images,oneimage)
+        }
+    }
+    fmt.Println(images)
+    all,_ := json.Marshal(images)
+    fmt.Println(string(all))
+	
+	this.Ctx.WriteString(string(all))
 }
 
 /* Wrap docker remote API to get data of image */
 func (this *DockerregistryapiController) GetImage() {
 	id := this.GetString(":id")
 	address := "/images/" + id + "/json"
-	result := RequestUnixSocket(address, "GET")
+	result := RequestRegistry(address, "GET")
 	this.Ctx.WriteString(result)
 }
 

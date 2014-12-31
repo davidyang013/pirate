@@ -66,7 +66,7 @@ seagullControllers.controller('ImagesController', ['$scope', '$routeParams', '$h
 
   /* Request beego API server to get images */
   $http.get('/dockerregistryapi/images/json').success(function(data) {
-    $scope.images = data.results;
+    $scope.images = data;
   });
 
   /* Request beego API server to delete image */
