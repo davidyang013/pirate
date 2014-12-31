@@ -76,7 +76,7 @@ func RequestUnixSocket(address, method string) string {
 	*/
 
 	defer response.Body.Close()
-
+	fmt.Println(address,":",string(body))
 	return string(body)
 }
 
@@ -209,14 +209,37 @@ func (this *DockerregistryapiController) GetUserImage() {
 func (this *DockerregistryapiController) DeleteImage() {
 	id := this.GetString(":id")
 	address := "/images/" + id
-	result := RequestUnixSocket(address, "DELETE")
+	result := RequestRegistry(address, "DELETE")
 	this.Ctx.WriteString(result)
 }
 
+type version struct {
+    ApiVersion string 
+	Arch string
+	GitCommit string
+	GoVersion string
+	KernelVersion string
+	Os string
+	Version string
+}
+
+//{"ApiVersion":"1.16","Arch":"amd64","GitCommit":"5bc2ff8",
+// "GoVersion":"go1.3.3","KernelVersion":"3.16.7-tinycore64","Os":"linux","Version":"0.9.0"}
+/* "host": [
+        "Linux",
+        "661a9d2360c3",
+        "3.16.7-tinycore64",
+        "#1 SMP Tue Dec 16 23:03:39 UTC 2014",
+        "x86_64",
+        "x86_64"
+    ],
+*/	
 /* Wrap docker remote API to get version info */
 func (this *DockerregistryapiController) GetVersion() {
-	address := "/version"
-	result := RequestUnixSocket(address, "GET")
+//	address := "/_ping"
+//	result := RequestRegistry(address, "GET")
+	result := `{"ApiVersion":"1.16","Arch":"amd64","GitCommit":"5bc2ff8",
+	"GoVersion":"go1.3.3","KernelVersion":"3.16.7-tinycore64","Os":"linux","Version":"0.9.0"}`
 	this.Ctx.WriteString(result)
 }
 
